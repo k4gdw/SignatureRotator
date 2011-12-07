@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SignatureRotator", "SignatureRotator\SignatureRotator.vbproj", "{80AD19FE-DA84-439B-B40C-BC1834814262}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SignatureLibrary", "SignatureLibrary\SignatureLibrary.vbproj", "{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UnitTests", "UnitTests\UnitTests.vbproj", "{543AD16E-D2A8-475F-9F3B-A28FE07C2760}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LiveWriterPlugin", "LiveWriterPlugin\LiveWriterPlugin.vbproj", "{F5D147C8-CAFC-41D3-825F-B38407AA735F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80AD19FE-DA84-439B-B40C-BC1834814262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80AD19FE-DA84-439B-B40C-BC1834814262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80AD19FE-DA84-439B-B40C-BC1834814262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80AD19FE-DA84-439B-B40C-BC1834814262}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{543AD16E-D2A8-475F-9F3B-A28FE07C2760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{543AD16E-D2A8-475F-9F3B-A28FE07C2760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{543AD16E-D2A8-475F-9F3B-A28FE07C2760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{543AD16E-D2A8-475F-9F3B-A28FE07C2760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5D147C8-CAFC-41D3-825F-B38407AA735F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5D147C8-CAFC-41D3-825F-B38407AA735F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5D147C8-CAFC-41D3-825F-B38407AA735F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5D147C8-CAFC-41D3-825F-B38407AA735F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal
