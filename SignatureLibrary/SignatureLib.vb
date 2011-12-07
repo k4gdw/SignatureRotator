@@ -2,7 +2,6 @@
 
 Imports System.Text
 Imports System.Xml
-Imports System.Collections
 
 #End Region
 
@@ -18,7 +17,7 @@ Public Class Signature
 
 #Region " Properties "
 
-	Protected Shared _sigs As Generic.List(Of Signature)
+    Protected Shared _sigs As List(Of Signature)
 	Protected Shared _sigFile As String
 	Protected Shared _quoteFile As String
 	Private _text As String = String.Empty
@@ -33,14 +32,14 @@ Public Class Signature
 	''' Created: 10/8/2008 at 2:59 PM
 	''' By: bjohns.
 	''' </remarks>
-	Public Shared Property Sigs() As Generic.List(Of Signature)
-		Get
-			Return _sigs
-		End Get
-		Set(ByVal value As Generic.List(Of Signature))
-			_sigs = value
-		End Set
-	End Property
+    Public Shared Property Sigs() As List(Of Signature)
+        Get
+            Return _sigs
+        End Get
+        Set(ByVal value As List(Of Signature))
+            _sigs = value
+        End Set
+    End Property
 
 	''' <summary>
 	''' Gets or sets the sig file.
@@ -186,17 +185,19 @@ Public Class Signature
 	Public Shared Function ChooseSig() As Signature
 		Dim sig As Signature
 		If Sigs.Count > 0 Then
-			Dim r As New Random(System.DateTime.Now.Millisecond)
+            Dim r As New Random(DateTime.Now.Millisecond)
 			Dim i As Integer = r.Next(0, Sigs.Count - 1)
 			sig = New Signature(Sigs.Item(i).Text, Sigs.Item(i).Preamble, Sigs.Item(i).Disclaimer)
 			If sig.Text.Length > 0 Then
 				Return sig
-			Else
-				Return ChooseSig()
+            Else
+                sig = ChooseSig()
+                Return sig
 			End If
 		Else
-			GetSigs(Sigs)
-			Return ChooseSig()
+            GetSigs(Sigs)
+            sig = ChooseSig()
+            Return sig
 		End If
 	End Function
 
@@ -212,7 +213,7 @@ Public Class Signature
 	Public Shared Function ChooseSig(ByRef retVal As Integer) As Signature
 		Dim sig As Signature
 		If Sigs.Count > 0 Then
-			Dim r As New Random(System.DateTime.Now.Millisecond)
+            Dim r As New Random(DateTime.Now.Millisecond)
 			Dim i As Integer = r.Next(0, Sigs.Count - 1)
 			retVal = i
 			With Sigs.Item(i)
@@ -233,56 +234,55 @@ Public Class Signature
 	''' Builds the preamble.
 	''' </summary>
 	''' <param name="rdr">The RDR.</param>
-	''' <param name="preamble">The preamble.</param>
-	''' <remarks>
-	''' Created: 10/8/2008 at 3:02 PM
-	''' By: bjohns.
-	''' </remarks>
-	Protected Shared Sub BuildPreamble(ByRef rdr As XmlTextReader, ByRef preamble As String)
-		Dim sb As New StringBuilder
-		Dim str As String
-		With sb
-			rdr.Read()
-			str = rdr.ReadElementString("Separator")
-			If str.Length > 0 Then
-				.Append(str)
-				.Append(vbCrLf)
-			End If
-			str = rdr.ReadElementString("Name")
-			If str.Length > 0 Then
-				.Append(str)
-				.Append(vbCrLf)
-			End If
-			str = rdr.ReadElementString("NickName")
-			If str.Length > 0 Then
-				.Append(str)
-				.Append(vbCrLf)
-			End If
-			str = rdr.ReadElementString("OtherInfo")
-			If str.Length > 0 Then
-				.Append(str)
-				.Append(vbCrLf)
-			End If
-			str = rdr.ReadElementString("Email")
-			If str.Length > 0 Then
-				.Append(str)
-				.Append(vbCrLf)
-			End If
-			str = rdr.ReadElementString("Phone")
-			If str.Length > 0 Then
-				.Append(str)
-				.Append(vbCrLf)
-			End If
-			str = rdr.ReadElementString("WebPage")
-			If str.Length > 0 Then
-				.Append(str)
-				.Append(vbCrLf)
-			End If
-			.Append(vbCrLf)
-			preamble = .ToString
-		End With
-		sb = Nothing
-	End Sub
+    ''' <param name="sigPreamble">The preamble.</param>
+    ''' <remarks>
+    ''' Created: 10/8/2008 at 3:02 PM
+    ''' By: bjohns.
+    ''' </remarks>
+    Protected Shared Sub BuildPreamble(ByRef rdr As XmlTextReader, ByRef sigPreamble As String)
+        Dim sb As New StringBuilder
+        Dim str As String
+        With sb
+            rdr.Read()
+            str = rdr.ReadElementString("Separator")
+            If str.Length > 0 Then
+                .Append(str)
+                .Append(vbCrLf)
+            End If
+            str = rdr.ReadElementString("Name")
+            If str.Length > 0 Then
+                .Append(str)
+                .Append(vbCrLf)
+            End If
+            str = rdr.ReadElementString("NickName")
+            If str.Length > 0 Then
+                .Append(str)
+                .Append(vbCrLf)
+            End If
+            str = rdr.ReadElementString("OtherInfo")
+            If str.Length > 0 Then
+                .Append(str)
+                .Append(vbCrLf)
+            End If
+            str = rdr.ReadElementString("Email")
+            If str.Length > 0 Then
+                .Append(str)
+                .Append(vbCrLf)
+            End If
+            str = rdr.ReadElementString("Phone")
+            If str.Length > 0 Then
+                .Append(str)
+                .Append(vbCrLf)
+            End If
+            str = rdr.ReadElementString("WebPage")
+            If str.Length > 0 Then
+                .Append(str)
+                .Append(vbCrLf)
+            End If
+            .Append(vbCrLf)
+            sigPreamble = .ToString
+        End With
+    End Sub
 
 	''' <summary>
 	''' Gets the disclaimer.
@@ -296,61 +296,59 @@ Public Class Signature
 	Protected Shared Function GetDisclaimer(ByRef rdr As XmlTextReader) As String
 		Dim sb As New StringBuilder
 		'rdr.Read()
-		Try
-			Dim dis As String = String.Empty
-			dis = rdr.ReadElementString("Disclaimer")
-			If Not dis = String.Empty Then
-				With sb
-					.Append(vbCrLf & vbCrLf)
-					.Append(dis)
-				End With
-				Return sb.ToString
-			Else
-				Return dis
-			End If
-		Finally
-			sb = Nothing
-		End Try
+        Try
+            Dim dis As String
+            dis = rdr.ReadElementString("Disclaimer")
+            If Not dis = String.Empty Then
+                With sb
+                    .Append(vbCrLf & vbCrLf)
+                    .Append(dis)
+                End With
+                Return sb.ToString
+            Else
+                Return dis
+            End If
+        End Try
 	End Function
 
 	''' <summary>
 	''' Gets the sigs.
 	''' </summary>
-	''' <param name="sigs">The sigs.</param>
+    ''' <param name="signatures">The sigs.</param>
 	''' <remarks>
 	''' Created: 10/8/2008 at 3:02 PM
 	''' By: bjohns.
 	''' </remarks>
-	Public Shared Sub GetSigs(ByRef sigs As Generic.List(Of Signature))
-		Dim preamble As String = String.Empty
-		If sigs Is Nothing Then
-			sigs = New Generic.List(Of Signature)
-		End If
-		Using xmlRdr As New XmlTextReader(_quoteFile)
-			Try
-				With xmlRdr
-					.WhitespaceHandling = WhitespaceHandling.None
-					.Read()
-					.Read()
-					BuildPreamble(xmlRdr, preamble)
-					Dim disclaimer As String = GetDisclaimer(xmlRdr)
-					.Read()
-					While .Read
-						Dim s As New Signature(.Value, preamble, disclaimer)
-						If s.Text.Length > 0 Then
-							sigs.Add(s)
-						End If
-					End While
-				End With
-			Catch ex As System.IO.FileNotFoundException
-				Throw New QuoteFileNotFoundException(ex, _quoteFile)
-			Catch ex As Exception
-				Throw ex
-			Finally
-				xmlRdr.Close()
-			End Try
-		End Using
-	End Sub
+    Public Shared Sub GetSigs(ByRef signatures As List(Of Signature))
+        Dim sigPreamble As String = String.Empty
+        If signatures Is Nothing Then
+            signatures = New List(Of Signature)
+        End If
+        Using xmlRdr As New XmlTextReader(_quoteFile)
+            Try
+                With xmlRdr
+                    .WhitespaceHandling = WhitespaceHandling.None
+                    .Read()
+                    .Read()
+                    BuildPreamble(xmlRdr, sigPreamble)
+                    Dim sigDisclaimer As String = GetDisclaimer(xmlRdr)
+                    .Read()
+                    While .Read
+                        Dim s As New Signature(.Value, sigPreamble, sigDisclaimer)
+                        If s.Text.Length > 0 Then
+                            signatures.Add(s)
+                        End If
+                    End While
+                End With
+            Catch ex As IO.FileNotFoundException
+                Throw New QuoteFileNotFoundException(ex, _quoteFile)
+            Catch ex As Exception
+                Throw
+            Finally
+                xmlRdr.Close()
+            End Try
+        End Using
+    End Sub
 
 	''' <summary>
 	''' Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
@@ -363,16 +361,14 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Public Overrides Function ToString() As String
-		Dim sb As New System.Text.StringBuilder
+        Dim sb As New StringBuilder
 		With sb
-			.Append(Me.Preamble)
+            .Append(Preamble)
 			.Append(vbCrLf)
-			.Append(Me.Text)
+            .Append(Text)
 			.Append(vbCrLf)
-			.Append(Me.Disclaimer)
-			Dim retval As String = sb.ToString
-			sb = Nothing
-			Return retval
+            .Append(Disclaimer)
+            Return sb.ToString
 		End With
 	End Function
 
@@ -391,15 +387,15 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-		If Not Me.disposedValue Then
-			If disposing Then
-				' TODO: free other state (managed objects).
-			End If
+        If Not disposedValue Then
+            If disposing Then
+                ' TODO: free other state (managed objects).
+            End If
 
-			' TODO: free your own state (unmanaged objects).
-			' TODO: set large fields to null.
-		End If
-		Me.disposedValue = True
+            ' TODO: free your own state (unmanaged objects).
+            ' TODO: set large fields to null.
+        End If
+        disposedValue = True
 	End Sub
 
 	''' <summary>
