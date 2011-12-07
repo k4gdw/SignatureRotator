@@ -1,5 +1,5 @@
 Imports System
-Imports MbUnit.Framework
+Imports NUnit.Framework
 Imports K4GDW.RandomSig.Signature
 
 ''' <summary>
@@ -15,7 +15,7 @@ Public Class SignatureLibraryTest
 	''' <remarks>Created: 10/7/2008 at 1:23 PM by bjohns.?</remarks>
 	<SetUp()> _
 	Public Sub Setup()
-		Sigs = New Generic.List(Of Signature)
+        Sigs = New List(Of Signature)
 		QuoteFile = "myquotes.xml"
 		SigFile = "testsig.txt"
 		GetSigs(Sigs)

@@ -13,3 +13,5 @@ Sync*.dat
 *.user
 *.docstates
 *.crunchsolution.cache
+_UpgradeReport_Files/
+UpgradeLog.XML
