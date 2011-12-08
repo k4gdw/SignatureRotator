@@ -39,10 +39,10 @@ Public Class SignatureLibraryTest
 	''' <remarks>Created: 10/7/2008 at 1:23 PM by bjohns.</remarks>
 	<Test()> _
 	Public Sub TestGetSigs()
-		Assert.IsTrue(Sigs.Count = 4, "The test collection didn't contain the correct number of signatures.")
-		For x As Integer = 0 To 3 Step 1
-			Assert.IsTrue(Sigs(x).Text = "Test Quote " & CStr(x + 1), "Test Quote " & CStr(x + 1) & " didn't load.")
-		Next
+        Assert.IsTrue(Sigs.Count = 4, String.Format("There were {0} signatures.", Sigs.Count))
+        For x As Integer = 0 To 3 Step 1
+            Assert.IsTrue(Sigs(x).Text = "Test Quote " & CStr(x + 1), "Test Quote " & CStr(x + 1) & " didn't load.")
+        Next
 	End Sub
 
 	''' <summary>
@@ -50,13 +50,50 @@ Public Class SignatureLibraryTest
 	''' if a non-existant quote file is specified.
 	''' </summary>
 	''' <remarks>Created: 10/7/2008 at 1:24 PM by bjohns.</remarks>
-	<Test(), ExpectedException(GetType(QuoteFileNotFoundException))> _
-	Public Sub TestQuoteFileNotFound()
-		QuoteFile = "filenotfound.xml"
-		Sigs.Clear()
-		GetSigs(Sigs)
-		Assert.Fail("Should have triggered a QuoteFileNotFoundException")
-	End Sub
+    <Test(), ExpectedException(GetType(QuoteFileNotFoundException))>
+    Public Sub TestQuoteFileNotFound()
+        QuoteFile = "filenotfound.xml"
+        Sigs.Clear()
+        GetSigs(Sigs)
+    End Sub
+
+    ''' <summary>
+    ''' Tests the throws exception if pointed at non XML file.
+    ''' </summary>
+    ''' <remarks>
+    ''' <para>
+    ''' Created:  12/7/2011 at 5:47 PM.<br />
+    ''' By: Bryan Johns, K4GDW<br />
+    ''' Email:  bjohns@greendragonweb.com
+    ''' </para>
+    ''' </remarks>
+    <Test(), ExpectedException(GetType(Exception))>
+    Public Sub TestThrowsExceptionIfPointedAtNonXMLFile()
+        QuoteFile = "nonxmlfile.txt"
+        Sigs.Clear()
+        GetSigs(Sigs)
+    End Sub
+
+    <Test()>
+    Public Sub An_Empty_Disclaimer_Returns_An_Empty_String()
+        QuoteFile = "emptydisclaimerquotes.xml"
+        Sigs.Clear()
+        GetSigs(Sigs)
+        Dim s As Signature = ChooseSig()
+        Assert.IsNullOrEmpty(s.Disclaimer)
+    End Sub
+
+    <Test()>
+    Public Sub After_Choosing_All_Sigs_It_Reloads()
+        Dim s As Signature
+        For x As Integer = 1 To 6
+            Dim i As Integer
+            s = ChooseSig(i)
+            Sigs.RemoveAt(i)
+        Next
+        Assert.IsTrue(0 < Sigs.Count < 5, String.Format("there were {0} signatures.", Sigs.Count))
+        Assert.IsNotNullOrEmpty(s.Text)
+    End Sub
 
 	''' <summary>
 	''' Tests the ChooseSig() method and it's overload that
@@ -93,7 +130,7 @@ Public Class SignatureLibraryTest
 		Dim sig As Signature = ChooseSig(i)
 		Sigs.RemoveAt(i)
 		Assert.IsFalse(Sigs.Contains(sig), "The signature wasn't removed.")
-		Assert.IsTrue(Sigs.Count = 3, "There are still 4 signatures.")
+        Assert.IsTrue(Sigs.Count = 3, String.Format("There are {0} signatures.", Sigs.Count))
 	End Sub
 
 	''' <summary>
@@ -106,8 +143,31 @@ Public Class SignatureLibraryTest
 	''' </remarks>
 	<Test(), ExpectedException(GetType(ArgumentOutOfRangeException))> _
 	Public Sub TestListBoundaries()
-		Dim sig1 As Signature = Sigs(4)
-		Assert.Fail("An out of bounds exception should have been triggered.")
-	End Sub
+        Console.WriteLine(Sigs(5))
+    End Sub
+
+    ''' <summary>
+    ''' Determines whether this instance [can get to string].
+    ''' </summary>
+    ''' <remarks>
+    ''' <para>
+    ''' Created:  12/7/2011 at 5:29 PM.<br />
+    ''' By: Bryan Johns, K4GDW<br />
+    ''' Email:  bjohns@greendragonweb.com
+    ''' </para>
+    ''' </remarks>
+    <Test()>
+    Public Sub CanGetToString()
+        Dim sig As Signature = ChooseSig()
+        Assert.IsNotNullOrEmpty(sig.ToString())
+    End Sub
+
+    <Test()>
+    Public Sub CanWorkWithNullSigsList()
+        Dim lsigs As List(Of Signature)
+        GetSigs(lsigs)
+        Assert.IsNotNull(lsigs)
+        Assert.IsTrue(lsigs.Count > 0)
+    End Sub
 
 End Class

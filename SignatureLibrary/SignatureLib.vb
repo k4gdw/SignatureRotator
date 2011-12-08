@@ -16,14 +16,7 @@ Public Class Signature
 	Implements IDisposable
 
 #Region " Properties "
-
-    Protected Shared _sigs As List(Of Signature)
-	Protected Shared _sigFile As String
-	Protected Shared _quoteFile As String
-	Private _text As String = String.Empty
-	Private _preamble As String = String.Empty
-	Private _disclaimer As String = String.Empty
-
+    
 	''' <summary>
 	''' Gets or sets the sigs.
 	''' </summary>
@@ -33,13 +26,6 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
     Public Shared Property Sigs() As List(Of Signature)
-        Get
-            Return _sigs
-        End Get
-        Set(ByVal value As List(Of Signature))
-            _sigs = value
-        End Set
-    End Property
 
 	''' <summary>
 	''' Gets or sets the sig file.
@@ -50,13 +36,6 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Public Shared Property SigFile() As String
-		Get
-			Return _sigFile
-		End Get
-		Set(ByVal value As String)
-			_sigFile = value
-		End Set
-	End Property
 
 	''' <summary>
 	''' Gets or sets the quote file.
@@ -67,13 +46,6 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Public Shared Property QuoteFile() As String
-		Get
-			Return _quoteFile
-		End Get
-		Set(ByVal value As String)
-			_quoteFile = value
-		End Set
-	End Property
 
 	''' <summary>
 	''' Gets or sets the text.
@@ -84,13 +56,6 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Public Property Text() As String
-		Get
-			Return _text
-		End Get
-		Set(ByVal value As String)
-			_text = value
-		End Set
-	End Property
 
 	''' <summary>
 	''' Gets or sets the preamble.
@@ -101,13 +66,6 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Public Property Preamble() As String
-		Get
-			Return _preamble
-		End Get
-		Set(ByVal value As String)
-			_preamble = value
-		End Set
-	End Property
 
 	''' <summary>
 	''' Gets or sets the disclaimer.
@@ -118,13 +76,6 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Public Property Disclaimer() As String
-		Get
-			Return _disclaimer
-		End Get
-		Set(ByVal value As String)
-			_disclaimer = value
-		End Set
-	End Property
 
 #End Region
 
@@ -137,8 +88,9 @@ Public Class Signature
 	''' Created: 10/8/2008 at 3:00 PM
 	''' By: bjohns.
 	''' </remarks>
-	Public Sub New()
-	End Sub
+    Public Sub New()
+        Sigs = New List(Of Signature)
+    End Sub
 
 	''' <summary>
 	''' Initializes a new instance of the <see cref="Signature" /> class.
@@ -150,8 +102,8 @@ Public Class Signature
 	''' By: bjohns.
 	''' </remarks>
 	Public Sub New(ByVal text As String, ByVal preamble As String)
-		_text = text
-		_preamble = preamble
+        Me.Text = text
+        Me.Preamble = preamble
 	End Sub
 
 	''' <summary>
@@ -164,11 +116,11 @@ Public Class Signature
 	''' Created: 10/8/2008 at 3:01 PM
 	''' By: bjohns.
 	''' </remarks>
-	Public Sub New(ByVal text As String, ByVal preamble As String, ByVal disclaimer As String)
-		_text = text
-		_preamble = preamble
-		_disclaimer = disclaimer
-	End Sub
+    Public Sub New(ByVal text As String, ByVal preamble As String, ByVal disclaimer As String)
+        Me.Text = text
+        Me.Preamble = preamble
+        Me.Disclaimer = disclaimer
+    End Sub
 
 #End Region
 
@@ -182,24 +134,19 @@ Public Class Signature
 	''' Created: 10/8/2008 at 3:02 PM
 	''' By: bjohns.
 	''' </remarks>
-	Public Shared Function ChooseSig() As Signature
-		Dim sig As Signature
-		If Sigs.Count > 0 Then
+    Public Shared Function ChooseSig() As Signature
+        If Sigs.Count > 0 Then
+            Dim sig As Signature
             Dim r As New Random(DateTime.Now.Millisecond)
-			Dim i As Integer = r.Next(0, Sigs.Count - 1)
-			sig = New Signature(Sigs.Item(i).Text, Sigs.Item(i).Preamble, Sigs.Item(i).Disclaimer)
-			If sig.Text.Length > 0 Then
-				Return sig
-            Else
-                sig = ChooseSig()
+            Dim i As Integer = r.Next(0, Sigs.Count - 1)
+            sig = New Signature(Sigs.Item(i).Text, Sigs.Item(i).Preamble, Sigs.Item(i).Disclaimer)
+            If sig.Text.Length > 0 Then
                 Return sig
-			End If
-		Else
-            GetSigs(Sigs)
-            sig = ChooseSig()
-            Return sig
-		End If
-	End Function
+            End If
+        End If
+        ' if we get this far something is wrong, not sure what
+        Throw New Exception("Unable to get a signature.")
+    End Function
 
 	''' <summary>
 	''' Chooses the sig.
@@ -219,15 +166,13 @@ Public Class Signature
 			With Sigs.Item(i)
 				sig = New Signature(.Text, .Preamble, .Disclaimer)
 			End With
-			If sig.Text.Length > 0 Then
-				Return sig
-			Else
-				Return ChooseSig()
-			End If
+            If sig.Text.Length > 0 Then Return sig
 		Else
-			GetSigs(Sigs)
-			Return ChooseSig()
-		End If
+            GetSigs(Sigs)
+            Return ChooseSig()
+        End If
+        ' again, if we get this far something is wrong.
+        Throw New Exception("Something is wrong.  Unable to choose a signature.")
 	End Function
 
 	''' <summary>
@@ -239,7 +184,7 @@ Public Class Signature
     ''' Created: 10/8/2008 at 3:02 PM
     ''' By: bjohns.
     ''' </remarks>
-    Protected Shared Sub BuildPreamble(ByRef rdr As XmlTextReader, ByRef sigPreamble As String)
+    Protected Shared Sub BuildPreamble(ByRef rdr As XmlReader, ByRef sigPreamble As String)
         Dim sb As New StringBuilder
         Dim str As String
         With sb
@@ -293,23 +238,19 @@ Public Class Signature
 	''' Created: 10/8/2008 at 3:02 PM
 	''' By: bjohns.
 	''' </remarks>
-	Protected Shared Function GetDisclaimer(ByRef rdr As XmlTextReader) As String
-		Dim sb As New StringBuilder
-		'rdr.Read()
-        Try
-            Dim dis As String
-            dis = rdr.ReadElementString("Disclaimer")
-            If Not dis = String.Empty Then
-                With sb
-                    .Append(vbCrLf & vbCrLf)
-                    .Append(dis)
-                End With
-                Return sb.ToString
-            Else
-                Return dis
-            End If
-        End Try
-	End Function
+    Protected Shared Function GetDisclaimer(ByRef rdr As XmlReader) As String
+        Dim sb As New StringBuilder
+        Dim dis As String
+        dis = rdr.ReadElementString("Disclaimer")
+        If Not dis = String.Empty Then
+            With sb
+                .Append(vbCrLf & vbCrLf)
+                .Append(dis)
+            End With
+            Return sb.ToString
+        End If
+        Return dis
+    End Function
 
 	''' <summary>
 	''' Gets the sigs.
@@ -324,10 +265,12 @@ Public Class Signature
         If signatures Is Nothing Then
             signatures = New List(Of Signature)
         End If
-        Using xmlRdr As New XmlTextReader(_quoteFile)
-            Try
+        Dim xmlSettings As New XmlReaderSettings
+        xmlSettings.IgnoreComments = True
+        xmlSettings.IgnoreWhitespace = True
+        Try
+            Using xmlRdr As XmlReader = XmlReader.Create(QuoteFile, xmlSettings)
                 With xmlRdr
-                    .WhitespaceHandling = WhitespaceHandling.None
                     .Read()
                     .Read()
                     BuildPreamble(xmlRdr, sigPreamble)
@@ -340,14 +283,13 @@ Public Class Signature
                         End If
                     End While
                 End With
-            Catch ex As IO.FileNotFoundException
-                Throw New QuoteFileNotFoundException(ex, _quoteFile)
-            Catch ex As Exception
-                Throw
-            Finally
                 xmlRdr.Close()
-            End Try
-        End Using
+            End Using
+            Catch ex As IO.FileNotFoundException
+            Throw New QuoteFileNotFoundException(ex, QuoteFile)
+        Catch ex As Exception
+            Throw New Exception(String.Format("An error occurred trying to get the signatures from the file ""{0}""", QuoteFile), ex)
+        End Try
     End Sub
 
 	''' <summary>
@@ -368,8 +310,8 @@ Public Class Signature
             .Append(Text)
 			.Append(vbCrLf)
             .Append(Disclaimer)
-            Return sb.ToString
-		End With
+        End With
+        Return sb.ToString
 	End Function
 
 #End Region

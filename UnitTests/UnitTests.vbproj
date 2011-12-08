@@ -117,7 +117,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="emptydisclaimerquotes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="myquotes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="nonxmlfile.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

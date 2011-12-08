@@ -89,8 +89,8 @@ Module modMain
 		Try
 			mobContextMenu = New ContextMenu
 			With mobContextMenu.MenuItems
-				.Add(New MenuItem("Exit", _
-				  New EventHandler(AddressOf modMain.Close)))
+                .Add(New MenuItem("Exit", _
+                  New EventHandler(AddressOf Close)))
 				.Add(New MenuItem("Refresh Sig", _
 				  New EventHandler(AddressOf ChangeSig)))
 				.Add(New MenuItem("Copy Sig", _
@@ -120,7 +120,6 @@ Module modMain
 			.Append(cs.Disclaimer)
 		End With
 		Clipboard.SetText(sb.ToString, TextDataFormat.Text)
-		sb = Nothing
 		Sigs.RemoveAt(i)
 	End Sub
 
@@ -145,7 +144,6 @@ Module modMain
 			.Append(My.Application.Info.Description)
 		End With
 		MsgBox(sb.ToString, MsgBoxStyle.Information, My.Application.Info.ProductName)
-		sb = Nothing
 	End Sub
 
 	''' <summary>
@@ -200,18 +198,18 @@ Module modMain
 	''' </summary>
 	''' <param name="sender">The source of the event.</param>
 	''' <param name="e">The <see cref="System.Timers.ElapsedEventArgs" /> instance containing the event data.</param>
-	Public Sub mobTimer_Elapsed(ByVal sender As Object, _
-	   ByVal e As System.Timers.ElapsedEventArgs) Handles mobTimer.Elapsed
-		Try
-			Dim i As Integer
-			WriteSigFile(ChooseSig(i))
-			Sigs.RemoveAt(i)
-			Sigs.TrimExcess()
-		Catch obEx As Exception
-			LogError(obEx)
-			Close()
-		End Try
-	End Sub
+    Public Sub mobTimer_Elapsed(ByVal sender As Object, _
+       ByVal e As Timers.ElapsedEventArgs) Handles mobTimer.Elapsed
+        Try
+            Dim i As Integer
+            WriteSigFile(ChooseSig(i))
+            Sigs.RemoveAt(i)
+            Sigs.TrimExcess()
+        Catch obEx As Exception
+            LogError(obEx)
+            Close()
+        End Try
+    End Sub
 
 	''' <summary>
 	''' Logs errors to the windows Application event log.
@@ -264,11 +262,11 @@ Module modMain
         sb.Replace(vbCrLf, "<br />")
         sb.Append("</p><p>&nbsp;</p></body></html>")
         Dim htmlSig As String = sb.ToString
-        sb = Nothing
+
         Using txtFileWriter As New StreamWriter(txtFile)
             Try
                 txtFileWriter.Write(signature)
-            Catch ex As System.IO.IOException
+            Catch ex As IOException
                 LogError("Unable to write to plain text signature file.", ex)
             Catch ex As Exception
                 Throw
@@ -280,7 +278,7 @@ Module modMain
         Using htmlFileWriter As New StreamWriter(htmlFile)
             Try
                 htmlFileWriter.Write(htmlSig)
-            Catch ex As System.IO.IOException
+            Catch ex As IOException
                 LogError("Unable to write to html signature file.", ex)
             Catch ex As Exception
                 Throw
@@ -294,47 +292,47 @@ Module modMain
 	''' <summary>
 	''' Local storage for the application Icon
 	''' </summary>
-	Private i As System.Drawing.Icon
+    Private icon As Icon
 
-	''' <summary>
-	''' The main routine.
-	''' </summary>
-	Sub Main()
-		My.Application.Log.WriteEntry("Starting Signature Rotator", TraceEventType.Start)
-		i = New System.Drawing.Icon(My.Application.Info.DirectoryPath & "\gdw16.ico")
-		mobNotifyIcon = New NotifyIcon()
-		mobNotifyIcon.Icon = i
-		mobNotifyIcon.Visible = False
-		'mobContextMenu = New ContextMenu()
-		' See if another instance is already running.
+    ''' <summary>
+    ''' The main routine.
+    ''' </summary>
+    Sub Main()
+        My.Application.Log.WriteEntry("Starting Signature Rotator", TraceEventType.Start)
+        Icon = New System.Drawing.Icon(My.Application.Info.DirectoryPath & "\gdw16.ico")
+        mobNotifyIcon = New NotifyIcon()
+        mobNotifyIcon.Icon = Icon
+        mobNotifyIcon.Visible = False
+        'mobContextMenu = New ContextMenu()
+        ' See if another instance is already running.
 
-		If AlreadyRunning() Then
-			LogError("An attempt was made to start the application twice.")
-			MsgBox("There is already an instance of the application running.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
-			Close()
-		End If
+        If AlreadyRunning() Then
+            LogError("An attempt was made to start the application twice.")
+            MsgBox("There is already an instance of the application running.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+            Close()
+        End If
 
-		CreateMenu()
-		mobNotifyIcon.ContextMenu = mobContextMenu
-		SetUpTimer()
-		mobNotifyIcon.Visible = True
-		Try
-			SigFile = ConfigurationManager.AppSettings("SigfileLocation")
-			QuoteFile = My.Application.Info.DirectoryPath & "\" & ConfigurationManager.AppSettings("quotefile")
-			Sigs = New Generic.List(Of Signature)
-			GetSigs(Sigs)
-			Dim i As Integer
-			WriteSigFile(ChooseSig(i))
-			Sigs.RemoveAt(i)
-			Sigs.TrimExcess()
-			Application.Run()
-		Catch ex As Exception
+        CreateMenu()
+        mobNotifyIcon.ContextMenu = mobContextMenu
+        SetUpTimer()
+        mobNotifyIcon.Visible = True
+        Try
+            SigFile = ConfigurationManager.AppSettings("SigfileLocation")
+            QuoteFile = My.Application.Info.DirectoryPath & "\" & ConfigurationManager.AppSettings("quotefile")
+            Sigs = New Generic.List(Of Signature)
+            GetSigs(Sigs)
+            Dim i As Integer
+            WriteSigFile(ChooseSig(i))
+            Sigs.RemoveAt(i)
+            Sigs.TrimExcess()
+            Application.Run()
+        Catch ex As Exception
 #If DEBUG Then
-			MsgBox(ex.Message & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
+            MsgBox(ex.Message & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
 #End If
-			LogError(ex)
-			Close()
-		End Try
-	End Sub
+            LogError(ex)
+            Close()
+        End Try
+    End Sub
 
 End Module
