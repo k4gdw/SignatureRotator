@@ -2,7 +2,6 @@
 
 Imports System.IO
 Imports System.Text
-Imports System.Collections
 Imports System.Configuration
 Imports K4GDW.RandomSig.Signature
 
@@ -299,7 +298,7 @@ Module modMain
     ''' </summary>
     Sub Main()
         My.Application.Log.WriteEntry("Starting Signature Rotator", TraceEventType.Start)
-        Icon = New System.Drawing.Icon(My.Application.Info.DirectoryPath & "\gdw16.ico")
+		icon = New Icon(My.Application.Info.DirectoryPath & "\gdw16.ico")
         mobNotifyIcon = New NotifyIcon()
         mobNotifyIcon.Icon = Icon
         mobNotifyIcon.Visible = False
@@ -319,7 +318,7 @@ Module modMain
         Try
             SigFile = ConfigurationManager.AppSettings("SigfileLocation")
             QuoteFile = My.Application.Info.DirectoryPath & "\" & ConfigurationManager.AppSettings("quotefile")
-            Sigs = New Generic.List(Of Signature)
+			Sigs = New List(Of Signature)
             GetSigs(Sigs)
             Dim i As Integer
             WriteSigFile(ChooseSig(i))
