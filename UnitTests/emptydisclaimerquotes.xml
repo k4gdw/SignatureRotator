@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Signature>
 	<Separator>--</Separator>
 	<Name>Bryan Johns</Name>
@@ -7,7 +7,7 @@
 	<Email>bjohns@greendragonweb.com</Email>
 	<Phone></Phone>
 	<WebPage>http://www.greendragonweb.com</WebPage>
-	<Disclaimer></Disclaimer>
+	<Boilerplate></Boilerplate>
 	<Quotes>
 		<Quote>Test Quote 1</Quote>
 		<Quote>Test Quote 2</Quote>

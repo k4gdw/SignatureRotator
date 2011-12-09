@@ -32,7 +32,8 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <ApplicationRevision>0</ApplicationRevision>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -123,6 +124,7 @@
     <ProjectReference Include="..\SignatureLibrary\SignatureLibrary.vbproj">
       <Project>{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}</Project>
       <Name>SignatureLibrary</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

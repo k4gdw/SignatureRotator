@@ -2,7 +2,6 @@
 
 Imports System.IO
 Imports System.Text
-Imports System.Collections
 Imports System.Configuration
 Imports K4GDW.RandomSig.Signature
 
@@ -117,7 +116,7 @@ Module modMain
 		With sb
 			.Append(cs.Preamble)
 			.Append(cs.Text)
-			.Append(cs.Disclaimer)
+			.Append(cs.Boilerplate)
 		End With
 		Clipboard.SetText(sb.ToString, TextDataFormat.Text)
 		Sigs.RemoveAt(i)
@@ -154,7 +153,7 @@ Module modMain
 	Private Sub ShowSig(ByVal sender As Object, ByVal e As EventArgs)
 		Dim i As Integer
 		Dim cs As Signature = ChooseSig(i)
-		MsgBox("Signature #:  " & (i + 1).ToString & " of " & Sigs.Count.ToString & vbCrLf & vbCrLf & cs.Preamble & cs.Text & cs.Disclaimer)
+		MsgBox("Signature #:  " & (i + 1).ToString & " of " & Sigs.Count.ToString & vbCrLf & vbCrLf & cs.Preamble & cs.Text & cs.Boilerplate)
 		Sigs.RemoveAt(i)
 	End Sub
 
@@ -252,8 +251,8 @@ Module modMain
         Dim sb As New StringBuilder
         sb.Append(sig.Preamble)
         sb.Append(sig.Text)
-        If Not sig.Disclaimer = String.Empty Then
-            sb.Append(sig.Disclaimer)
+        If Not sig.Boilerplate = String.Empty Then
+            sb.Append(sig.Boilerplate)
         End If
         sb.Append(vbCrLf)
         sb.Append(vbCrLf)
@@ -299,7 +298,7 @@ Module modMain
     ''' </summary>
     Sub Main()
         My.Application.Log.WriteEntry("Starting Signature Rotator", TraceEventType.Start)
-        Icon = New System.Drawing.Icon(My.Application.Info.DirectoryPath & "\gdw16.ico")
+		icon = New Icon(My.Application.Info.DirectoryPath & "\gdw16.ico")
         mobNotifyIcon = New NotifyIcon()
         mobNotifyIcon.Icon = Icon
         mobNotifyIcon.Visible = False
@@ -319,7 +318,7 @@ Module modMain
         Try
             SigFile = ConfigurationManager.AppSettings("SigfileLocation")
             QuoteFile = My.Application.Info.DirectoryPath & "\" & ConfigurationManager.AppSettings("quotefile")
-            Sigs = New Generic.List(Of Signature)
+			Sigs = New List(Of Signature)
             GetSigs(Sigs)
             Dim i As Integer
             WriteSigFile(ChooseSig(i))
