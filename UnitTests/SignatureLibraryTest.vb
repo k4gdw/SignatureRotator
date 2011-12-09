@@ -74,14 +74,14 @@ Public Class SignatureLibraryTest
         GetSigs(Sigs)
     End Sub
 
-    <Test()>
-    Public Sub An_Empty_Disclaimer_Returns_An_Empty_String()
-        QuoteFile = "emptydisclaimerquotes.xml"
-        Sigs.Clear()
-        GetSigs(Sigs)
-        Dim s As Signature = ChooseSig()
-        Assert.IsNullOrEmpty(s.Disclaimer)
-    End Sub
+	<Test()>
+	Public Sub An_Empty_Boilerplate_Returns_An_Empty_String()
+		QuoteFile = "emptydisclaimerquotes.xml"
+		Sigs.Clear()
+		GetSigs(Sigs)
+		Dim s As Signature = ChooseSig()
+		Assert.IsNullOrEmpty(s.Boilerplate)
+	End Sub
 
     <Test()>
     Public Sub After_Choosing_All_Sigs_It_Reloads()

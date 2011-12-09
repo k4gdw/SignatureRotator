@@ -67,14 +67,14 @@ Public Class Signature
 	Public Property Preamble() As String
 
 	''' <summary>
-	''' Gets or sets the disclaimer.
+	''' Gets or sets the Boilerplate.
 	''' </summary>
-	''' <value>The disclaimer.</value>
+	''' <value>The Boilerplate.</value>
 	''' <remarks>
 	''' Created: 10/8/2008 at 3:00 PM
 	''' By: bjohns.
 	''' </remarks>
-	Public Property Disclaimer() As String
+	Public Property Boilerplate() As String
 
 #End Region
 
@@ -110,15 +110,15 @@ Public Class Signature
 	''' </summary>
 	''' <param name="text">The text.</param>
 	''' <param name="preamble">The preamble.</param>
-	''' <param name="disclaimer">The disclaimer.</param>
+	''' <param name="boilerplate">The Boilerplate.</param>
 	''' <remarks>
 	''' Created: 10/8/2008 at 3:01 PM
 	''' By: bjohns.
 	''' </remarks>
-	Public Sub New(ByVal text As String, ByVal preamble As String, ByVal disclaimer As String)
+	Public Sub New(ByVal text As String, ByVal preamble As String, ByVal boilerplate As String)
 		Me.Text = text
 		Me.Preamble = preamble
-		Me.Disclaimer = disclaimer
+		Me.Boilerplate = boilerplate
 	End Sub
 
 #End Region
@@ -138,7 +138,7 @@ Public Class Signature
 			Dim sig As Signature
 			Dim r As New Random(DateTime.Now.Millisecond)
 			Dim i As Integer = r.Next(0, Sigs.Count - 1)
-			sig = New Signature(Sigs.Item(i).Text, Sigs.Item(i).Preamble, Sigs.Item(i).Disclaimer)
+			sig = New Signature(Sigs.Item(i).Text, Sigs.Item(i).Preamble, Sigs.Item(i).Boilerplate)
 			If sig.Text.Length > 0 Then
 				Return sig
 			End If
@@ -163,7 +163,7 @@ Public Class Signature
 			Dim i As Integer = r.Next(0, Sigs.Count - 1)
 			retVal = i
 			With Sigs.Item(i)
-				sig = New Signature(.Text, .Preamble, .Disclaimer)
+				sig = New Signature(.Text, .Preamble, .Boilerplate)
 			End With
 			If sig.Text.Length > 0 Then Return sig
 		Else
@@ -229,7 +229,7 @@ Public Class Signature
 	End Sub
 
 	''' <summary>
-	''' Gets the disclaimer.
+	''' Gets the Boilerplate.
 	''' </summary>
 	''' <param name="rdr">The RDR.</param>
 	''' <returns></returns>
@@ -237,18 +237,18 @@ Public Class Signature
 	''' Created: 10/8/2008 at 3:02 PM
 	''' By: bjohns.
 	''' </remarks>
-	Protected Shared Function GetDisclaimer(ByRef rdr As XmlReader) As String
+	Protected Shared Function GetBoilerplate(ByRef rdr As XmlReader) As String
 		Dim sb As New StringBuilder
-		Dim dis As String
-		dis = rdr.ReadElementString("Disclaimer")
-		If Not dis = String.Empty Then
+		Dim bp As String
+		bp = rdr.ReadElementString("Boilerplate")
+		If Not bp = String.Empty Then
 			With sb
 				.Append(vbCrLf & vbCrLf)
-				.Append(dis)
+				.Append(bp)
 			End With
 			Return sb.ToString
 		End If
-		Return dis
+		Return bp
 	End Function
 
 	''' <summary>
@@ -273,10 +273,10 @@ Public Class Signature
 					.Read()
 					.Read()
 					BuildPreamble(xmlRdr, sigPreamble)
-					Dim sigDisclaimer As String = GetDisclaimer(xmlRdr)
+					Dim sigBoilerplate As String = GetBoilerplate(xmlRdr)
 					.Read()
 					While .Read
-						Dim s As New Signature(.Value, sigPreamble, sigDisclaimer)
+						Dim s As New Signature(.Value, sigPreamble, sigBoilerplate)
 						If s.Text.Length > 0 Then
 							signatures.Add(s)
 						End If
@@ -308,7 +308,7 @@ Public Class Signature
 			.Append(vbCrLf)
 			.Append(Text)
 			.Append(vbCrLf)
-			.Append(Disclaimer)
+			.Append(Boilerplate)
 		End With
 		Return sb.ToString
 	End Function
@@ -325,7 +325,7 @@ End Class
 ''' By: bjohns.
 ''' </remarks>
 Public Class QuoteFileNotFoundException
-	Inherits ApplicationException
+	Inherits Exception
 
 	''' <summary>
 	''' Initializes a new instance of the <see cref="QuoteFileNotFoundException" /> class.

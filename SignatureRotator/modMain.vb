@@ -116,7 +116,7 @@ Module modMain
 		With sb
 			.Append(cs.Preamble)
 			.Append(cs.Text)
-			.Append(cs.Disclaimer)
+			.Append(cs.Boilerplate)
 		End With
 		Clipboard.SetText(sb.ToString, TextDataFormat.Text)
 		Sigs.RemoveAt(i)
@@ -153,7 +153,7 @@ Module modMain
 	Private Sub ShowSig(ByVal sender As Object, ByVal e As EventArgs)
 		Dim i As Integer
 		Dim cs As Signature = ChooseSig(i)
-		MsgBox("Signature #:  " & (i + 1).ToString & " of " & Sigs.Count.ToString & vbCrLf & vbCrLf & cs.Preamble & cs.Text & cs.Disclaimer)
+		MsgBox("Signature #:  " & (i + 1).ToString & " of " & Sigs.Count.ToString & vbCrLf & vbCrLf & cs.Preamble & cs.Text & cs.Boilerplate)
 		Sigs.RemoveAt(i)
 	End Sub
 
@@ -251,8 +251,8 @@ Module modMain
         Dim sb As New StringBuilder
         sb.Append(sig.Preamble)
         sb.Append(sig.Text)
-        If Not sig.Disclaimer = String.Empty Then
-            sb.Append(sig.Disclaimer)
+        If Not sig.Boilerplate = String.Empty Then
+            sb.Append(sig.Boilerplate)
         End If
         sb.Append(vbCrLf)
         sb.Append(vbCrLf)

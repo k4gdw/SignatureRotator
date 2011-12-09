@@ -124,6 +124,7 @@
     <ProjectReference Include="..\SignatureLibrary\SignatureLibrary.vbproj">
       <Project>{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}</Project>
       <Name>SignatureLibrary</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
