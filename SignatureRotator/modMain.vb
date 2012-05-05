@@ -12,7 +12,7 @@ Module modMain
 	''' <summary>
 	''' Local storage for the NotifyIcon
 	''' </summary>
-	Private mobNotifyIcon As NotifyIcon
+'	Private mobNotifyIcon As NotifyIcon
 
 	''' <summary>
 	''' Local storage for the ContextManu object.
