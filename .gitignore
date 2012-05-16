@@ -1,4 +1,4 @@
-[Pp]ackages/*
+packages/*
 !repositories.config
 *resharper.user
 [Cc]ode[Dd]rop/
