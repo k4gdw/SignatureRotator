@@ -1,8 +1,7 @@
+[Pp]ackages/*
+!repositories.config
 *resharper.user
 [Cc]ode[Dd]rop/
-[Dd]ebug/
-[Cc]ode[Dd]rop/
-[Rr]elease/
 build/
 [Bb]in/
 [Oo]bj/
