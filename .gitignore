@@ -1,3 +1,5 @@
+[Pp]ackages/*
+!repositories.config
 *resharper.user
 [Cc]ode[Dd]rop/
 [Dd]ebug/
