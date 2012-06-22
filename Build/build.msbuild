@@ -7,10 +7,10 @@
   <PropertyGroup>
 	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 	<BaseDir>$(MSBuildProjectDirectory)\..\</BaseDir>
-	<TestProjectFile>$(BaseDir)TimeTracker.Tests\TimeTracker.Tests.vbproj</TestProjectFile>
-	<Major>0</Major>
-	<Minor>42</Minor>
-	<Revision>8</Revision>
+	<TestProjectFile>$(BaseDir)UnitTests\UnitTests.vbproj</TestProjectFile>
+	<Major>2</Major>
+	<Minor>0</Minor>
+	<Revision>1</Revision>
 	<Build Condition=" '$(BuildNo)' == '' ">$(BUILD_NUMBER)</Build>
 	<Build Condition=" '$(BuildNo)' != '' ">$(BuildNo)</Build>
   </PropertyGroup>
@@ -18,11 +18,11 @@
   <Target Name="Version">
 	<Message Text="Version: $(Major).$(Minor).$(Revision).$(Build)"/>
 	<AssemblyInfo CodeLanguage="VB"
-				  OutputFile="$(BaseDir)\SolutionInfo\SolutionInfo.vb"
-				  AssemblyCompany="Alabama Department of Mental Health"
-				  AssemblyCopyright="Copyright © ADMH 2012"
-				  AssemblyTrademark="ADMH"
-				  AssemblyProduct="TimeTracker"
+				  OutputFile="$(BaseDir)\SolutionInfo.vb"
+				  AssemblyCompany="RandomSig"
+				  AssemblyCopyright="Copyright © K4GDW Software 2012"
+				  AssemblyTrademark="K4GDW Software"
+				  AssemblyProduct="RandomSig"
 				  ComVisible="False"
 				  AssemblyVersion="$(Major).$(Minor)"
 				  AssemblyFileVersion="$(Major).$(Minor).$(Revision)"
@@ -31,31 +31,29 @@
 
   <Target Name="Clean">
 	<ItemGroup>
-	  <BinFiles Include="$(BaseDir)Contracts\bin\**\*.*" />
-	  <BinFiles Include="$(BaseDir)Core\bin\**\*.*" />
-	  <BinFiles Include="$(BaseDir)TimeTracker.Tests\bin\**\*.*" />
-	  <BinFiles Include="$(BaseDir)UI\bin\**.*.*" />
-	  <BinFiles Include="$(BaseDir)UI\obj\**\*.*" />
-	  <BinFiles Include="$(BaseDir)DAL\bin\**\*.*" />
-	  <BinFiles Include="$(BaseDir)DAL\obj\**\*.*" />
-	  <BinFiles Include="$(BaseDir)Contracts\obj\**\*.*" />
-	  <BinFiles Include="$(BaseDir)TimeTracker.Tests\obj\**\*.*" />
+	  <BinFiles Include="$(BaseDir)SignatureLibrary\bin\**\*.*" />
+	  <BinFiles Include="$(BaseDir)SignatureRotator\bin\**\*.*" />
+	  <BinFiles Include="$(BaseDir)UnitTests\bin\**\*.*" />
+    <BinFiles Include="$(BaseDir)SignatureLibrary\obj\**\*.*" />
+    <BinFiles Include="$(BaseDir)SignatureRotator\obj\**\*.*" />
+    <BinFiles Include="$(BaseDir)UnitTests\obj\**\*.*" />
 	</ItemGroup>
 	<Message Text="Cleaning Binaries ..." />
-	<Delete Files="@(BinFiles)" />
+	<Delete Files="@(BinFiles)"
+			   ContinueOnError="true" />
   </Target>
 
   <Target Name="Tests">
 	<Message Text="$(Configuration) Building UnitTests..." />
-	<MSBuild Projects="$(BaseDir)TimeTracker.Tests\TimeTracker.Tests.vbproj"
+	<MSBuild Projects="$(BaseDir)UnitTests\UnitTests.vbproj"
 			 Targets="Build"
 			 Properties="Configuration=$(Configuration)"/>
-	<Message Text="Running tests on $(BaseDir)TimeTracker.Tests\bin\$(Configuration)\ADMH.TimeTracker.Tests.dll" />
-	<NUnit Assemblies="$(BaseDir)TimeTracker.Tests\bin\$(Configuration)\ADMH.TimeTracker.Tests.dll"
+	<Message Text="Running tests on $(BaseDir)UnitTests\bin\$(Configuration)\SignatureLibraryTest.dll" />
+	<NUnit Assemblies="$(BaseDir)UnitTests\bin\$(Configuration)\SignatureLibraryTest.dll"
 		   ToolPath="C:\Program Files (x86)\NUnit 2.6\bin\"
 		   DisableShadowCopy="true"
 		   ProjectConfiguration="$(Configuration)"
-		   WorkingDirectory="$(BaseDir)TimeTracker.Tests"
+		   WorkingDirectory="$(BaseDir)UnitTests"
 		   ContinueOnError="false" />
   </Target>
 
@@ -65,31 +63,20 @@
 	<RemoveDir Directories="$(BaseDir)code_drop"
 			   ContinueOnError="true" />
 	<ItemGroup>
-	  <Content Include="$(BaseDir)UI\Content\**\*.*" />
-	  <Scripts Include="$(BaseDir)UI\Scripts\**\*.*" />
-	  <Bin Include="$(BaseDir)UI\bin\*.dll" />
-	  <Bin Include="$(BaseDir)UI\bin\*.pdb" />
-	  <Views Include="$(BaseDir)UI\Views\**\*.*" />
-	  <Root Include="$(BaseDir)UI\Web.config" />
-	  <Root Include="$(BaseDir)UI\connections.config" />
-	  <Root Include="$(BaseDir)UI\Global.asax" />
+	  <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\*.dll" />
+    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\SignatureRotator.exe" />
+    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\SignatureRotator.exe.config" />
+    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\gdw16.ico" />
+    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\myquotes.xml" />
 	</ItemGroup>
-	<Copy SourceFiles="@(Content)"
-		  destinationFolder="$(BaseDir)code_drop\Content\%(RecursiveDir)" />
-	<Copy SourceFiles="@(Scripts)"
-		  destinationFolder="$(BaseDir)code_drop\Scripts\%(RecursiveDir)" />
-	<Copy SourceFiles="@(Views)"
-		  destinationFolder="$(BaseDir)code_drop\Views\%(RecursiveDir)" />
 	<Copy SourceFiles="@(Bin)"
-		  destinationFolder="$(BaseDir)code_drop\bin\%(RecursiveDir)" />
-	<Copy SourceFiles="@(Root)"
 		  destinationFolder="$(BaseDir)code_drop" />
   </Target>
 
   <Target Name="Build"
 		  DependsOnTargets="Clean">
 	<Message Text="$(Configuration) Building Solution.." />
-	<MSBuild Projects="$(BaseDir)TimeTracker.sln"
+	<MSBuild Projects="$(BaseDir)RandomSig.sln"
 			 Targets="Build"
 			 Properties="Configuration=$(Configuration)"/>
   </Target>
