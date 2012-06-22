@@ -1,0 +1,1 @@
+msbuild.exe build.msbuild /p:Configuration=Debug;BuildNo=DEV /t:Version;Build /m

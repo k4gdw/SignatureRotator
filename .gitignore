@@ -2,7 +2,6 @@
 !repositories.config
 *resharper.user
 [Cc]ode[Dd]rop/
-build/
 [Bb]in/
 [Oo]bj/
 *.suo

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+		 DefaultTargets="Build">
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+  <UsingTask TaskName="ILMerge.MSBuild.Tasks.ILMerge"
+			 AssemblyFile="ILMerge.MSBuild.Tasks.ILMerge"/>
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<BaseDir>$(MSBuildProjectDirectory)\..\</BaseDir>
+	<TestProjectFile>$(BaseDir)TimeTracker.Tests\TimeTracker.Tests.vbproj</TestProjectFile>
+	<Major>0</Major>
+	<Minor>42</Minor>
+	<Revision>8</Revision>
+	<Build Condition=" '$(BuildNo)' == '' ">$(BUILD_NUMBER)</Build>
+	<Build Condition=" '$(BuildNo)' != '' ">$(BuildNo)</Build>
+  </PropertyGroup>
+
+  <Target Name="Version">
+	<Message Text="Version: $(Major).$(Minor).$(Revision).$(Build)"/>
+	<AssemblyInfo CodeLanguage="VB"
+				  OutputFile="$(BaseDir)\SolutionInfo\SolutionInfo.vb"
+				  AssemblyCompany="Alabama Department of Mental Health"
+				  AssemblyCopyright="Copyright © ADMH 2012"
+				  AssemblyTrademark="ADMH"
+				  AssemblyProduct="TimeTracker"
+				  ComVisible="False"
+				  AssemblyVersion="$(Major).$(Minor)"
+				  AssemblyFileVersion="$(Major).$(Minor).$(Revision)"
+				  AssemblyInformationalVersion="$(Major).$(Minor).$(Revision) $(Build)" />
+  </Target>
+
+  <Target Name="Clean">
+	<ItemGroup>
+	  <BinFiles Include="$(BaseDir)Contracts\bin\**\*.*" />
+	  <BinFiles Include="$(BaseDir)Core\bin\**\*.*" />
+	  <BinFiles Include="$(BaseDir)TimeTracker.Tests\bin\**\*.*" />
+	  <BinFiles Include="$(BaseDir)UI\bin\**.*.*" />
+	  <BinFiles Include="$(BaseDir)UI\obj\**\*.*" />
+	  <BinFiles Include="$(BaseDir)DAL\bin\**\*.*" />
+	  <BinFiles Include="$(BaseDir)DAL\obj\**\*.*" />
+	  <BinFiles Include="$(BaseDir)Contracts\obj\**\*.*" />
+	  <BinFiles Include="$(BaseDir)TimeTracker.Tests\obj\**\*.*" />
+	</ItemGroup>
+	<Message Text="Cleaning Binaries ..." />
+	<Delete Files="@(BinFiles)" />
+  </Target>
+
+  <Target Name="Tests">
+	<Message Text="$(Configuration) Building UnitTests..." />
+	<MSBuild Projects="$(BaseDir)TimeTracker.Tests\TimeTracker.Tests.vbproj"
+			 Targets="Build"
+			 Properties="Configuration=$(Configuration)"/>
+	<Message Text="Running tests on $(BaseDir)TimeTracker.Tests\bin\$(Configuration)\ADMH.TimeTracker.Tests.dll" />
+	<NUnit Assemblies="$(BaseDir)TimeTracker.Tests\bin\$(Configuration)\ADMH.TimeTracker.Tests.dll"
+		   ToolPath="C:\Program Files (x86)\NUnit 2.6\bin\"
+		   DisableShadowCopy="true"
+		   ProjectConfiguration="$(Configuration)"
+		   WorkingDirectory="$(BaseDir)TimeTracker.Tests"
+		   ContinueOnError="false" />
+  </Target>
+
+  <Target Name="Publish"
+		  DependsOnTargets="Version;Build">
+	<Message Text="Publishing Solution..." />
+	<RemoveDir Directories="$(BaseDir)code_drop"
+			   ContinueOnError="true" />
+	<ItemGroup>
+	  <Content Include="$(BaseDir)UI\Content\**\*.*" />
+	  <Scripts Include="$(BaseDir)UI\Scripts\**\*.*" />
+	  <Bin Include="$(BaseDir)UI\bin\*.dll" />
+	  <Bin Include="$(BaseDir)UI\bin\*.pdb" />
+	  <Views Include="$(BaseDir)UI\Views\**\*.*" />
+	  <Root Include="$(BaseDir)UI\Web.config" />
+	  <Root Include="$(BaseDir)UI\connections.config" />
+	  <Root Include="$(BaseDir)UI\Global.asax" />
+	</ItemGroup>
+	<Copy SourceFiles="@(Content)"
+		  destinationFolder="$(BaseDir)code_drop\Content\%(RecursiveDir)" />
+	<Copy SourceFiles="@(Scripts)"
+		  destinationFolder="$(BaseDir)code_drop\Scripts\%(RecursiveDir)" />
+	<Copy SourceFiles="@(Views)"
+		  destinationFolder="$(BaseDir)code_drop\Views\%(RecursiveDir)" />
+	<Copy SourceFiles="@(Bin)"
+		  destinationFolder="$(BaseDir)code_drop\bin\%(RecursiveDir)" />
+	<Copy SourceFiles="@(Root)"
+		  destinationFolder="$(BaseDir)code_drop" />
+  </Target>
+
+  <Target Name="Build"
+		  DependsOnTargets="Clean">
+	<Message Text="$(Configuration) Building Solution.." />
+	<MSBuild Projects="$(BaseDir)TimeTracker.sln"
+			 Targets="Build"
+			 Properties="Configuration=$(Configuration)"/>
+  </Target>
+</Project>
