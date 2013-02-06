@@ -1,35 +1,62 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+* 					-text
 
-# Custom for Visual Studio
-*.cs     diff=csharp
-*.sln    merge=union
-*.csproj merge=union
-*.vbproj merge=union
-*.fsproj merge=union
-*.dbproj merge=union
+# binaries and images
+*.bmp				binary
+*.dll				binary
+*.gif				binary
+*.jpg				binary
+*.png				binary
+*.snk				binary
+*.zip				binary
+*.nupkg				binary
 
-# Standard to msysgit
-*.doc	 diff=astextplain
-*.DOC	 diff=astextplain
-*.docx diff=astextplain
-*.DOCX diff=astextplain
-*.dot  diff=astextplain
-*.DOT  diff=astextplain
-*.pdf  diff=astextplain
-*.PDF	 diff=astextplain
-*.rtf	 diff=astextplain
-*.RTF	 diff=astextplain
+# project and solution files
+*.csproj 			-text merge=union 
+*.vbproj 			-text merge=union 
+*.fsproj 			-text merge=union 
+*.dbproj 			-text merge=union 
+*.sln 	 			-text eol=crlf merge=union 
 
-
-# binary files
-*.png	binary
-*.jpg	binary
-*.gif	binary
-*.zip	binary
-*.nupkg	binary
-*.dll	binsry
-*.exe	binary
-*.ico	binary
-
-core.autocrlf=true
+# text based source and markup files
+*.htm				-text
+*.html				-text
+*.ascx				-text
+*.asmx				-text
+*.cshtml			-text
+*.css				-text
+*.cd				-text
+*.cmd				-text
+*.coffee			-text
+*.config			-text
+*.cs				-text diff=csharp 
+*.dtd				-text
+*.edmx				-text
+*.js				-text diff=javascript
+*.json				-text
+*.msbuild			-text
+*.nuspec			-text
+*.resx				-text
+*.ruleset			-text
+*.StyleCop			-text
+*.targets			-text
+*.tt				-text
+*.txt				-text
+*.vb				-text
+*.vbhtml			-text
+*.vbs				-text
+*.wsf				-text
+*.xml				-text
+*.xunit				-text
+.gitattributes		-text
+.gitignore			-text
+*.xaml				-text
+*.appxmanifest		-text
+*.txt				-text
+*.md				-text
+*.markgown			-text
+*.cmd				-text
+*.config			-text
+*.targets			-text
+*.xml				-text
+Settings.StyleCop 	-text
+VERSION 			-text
