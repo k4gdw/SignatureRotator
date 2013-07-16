@@ -1,83 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-		 DefaultTargets="Build">
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
-  <UsingTask TaskName="ILMerge.MSBuild.Tasks.ILMerge"
-			 AssemblyFile="ILMerge.MSBuild.Tasks.ILMerge"/>
-  <PropertyGroup>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-	<BaseDir>$(MSBuildProjectDirectory)\..\</BaseDir>
-	<TestProjectFile>$(BaseDir)UnitTests\UnitTests.vbproj</TestProjectFile>
-	<Major>2</Major>
-	<Minor>0</Minor>
-	<Revision>1</Revision>
-	<Build Condition=" '$(BuildNo)' == '' ">$(BUILD_NUMBER)</Build>
-	<Build Condition=" '$(BuildNo)' != '' ">$(BuildNo)</Build>
-  </PropertyGroup>
+         DefaultTargets="Build">
+	<Import
+		Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+	<UsingTask TaskName="ILMerge.MSBuild.Tasks.ILMerge"
+	           AssemblyFile="ILMerge.MSBuild.Tasks.ILMerge" />
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <BumpBuild Condition=" '$(BumpBuild)' == '' ">false</BumpBuild>
+        <BaseDir>$(MSBuildProjectDirectory)\..\</BaseDir>
+        <MSBuildCommunityTasksPath>$(BaseDir).build\</MSBuildCommunityTasksPath>
+        <VersionFile>$(BaseDir)Build\_BuildInfo.xml</VersionFile>
+        <SlnFile>$(BaseDir)ABHAS.sln</SlnFile>
+        <WebsiteDir>$(BaseDir)Website\</WebsiteDir>
+        <WebsiteFile>$(WebsiteDir)Website.vbproj</WebsiteFile>
+        <TestProjectDir>$(BaseDir)Tests\</TestProjectDir>
+        <TestProjectFile>$(TestProjectDir)Tests.vbproj</TestProjectFile>
+        <AssyInfoPath>$(WebsiteDir)My Project\</AssyInfoPath>
+        <AssyInfoFile>$(AssyInfoPath)AssemblyInfo.vb</AssyInfoFile>
+		<Build Condition=" '$(BUILD_NUMBER)' != '' ">$(BUILD_NUMBER)</Build>
+	</PropertyGroup>
+	
+	 <Target Name="BumpBuildNumber">
+        <XmlRead XmlFileName="$(VersionFile)"
+                 Xpath="//buildInfo/version/@Build">
+			<Output TaskParameter="Value"
+                    ItemName="OldBuild" />
+		</XmlRead>
+        <Add Numbers="@(OldBuild);1">
+            <Output TaskParameter="Result"
+                    PropertyName="NewBuild" />
+        </Add>
+        <Message Text="Add @(OldBuild) + 1 = $(NewBuild)" />
+        <XmlUpdate XmlFileName="$(VersionFile)"
+                   Xpath="//buildInfo/version/@Build"
+				   Value="$(NewBuild)" />
+    </Target>
 
-  <Target Name="Version">
-	<Message Text="Version: $(Major).$(Minor).$(Revision).$(Build)"/>
-	<AssemblyInfo CodeLanguage="VB"
-				  OutputFile="$(BaseDir)\SolutionInfo.vb"
-				  AssemblyCompany="RandomSig"
-				  AssemblyCopyright="Copyright © K4GDW Software 2012"
-				  AssemblyTrademark="K4GDW Software"
-				  AssemblyProduct="RandomSig"
-				  ComVisible="False"
-				  AssemblyVersion="$(Major).$(Minor)"
-				  AssemblyFileVersion="$(Major).$(Minor).$(Revision)"
-				  AssemblyInformationalVersion="$(Major).$(Minor).$(Revision) build-$(Build)" />
-  </Target>
+	<Target Name="Version">
+		<Message Text="Version: $(Major).$(Minor).$(Revision).$(Build)" />
+		<AssemblyInfo CodeLanguage="VB"
+		              OutputFile="$(BaseDir)\SolutionInfo.vb"
+		              AssemblyCompany="RandomSig"
+		              AssemblyCopyright="Copyright © K4GDW Software 2012"
+		              AssemblyTrademark="K4GDW Software"
+		              AssemblyProduct="RandomSig"
+		              ComVisible="False"
+		              AssemblyVersion="$(Major).$(Minor)"
+		              AssemblyFileVersion="$(Major).$(Minor).$(Revision)"
+		              AssemblyInformationalVersion="$(Major).$(Minor).$(Revision) build-$(Build)" />
+	</Target>
 
-  <Target Name="Clean">
-	<ItemGroup>
-	  <BinFiles Include="$(BaseDir)SignatureLibrary\bin\**\*.*" />
-	  <BinFiles Include="$(BaseDir)SignatureRotator\bin\**\*.*" />
-	  <BinFiles Include="$(BaseDir)UnitTests\bin\**\*.*" />
-    <BinFiles Include="$(BaseDir)SignatureLibrary\obj\**\*.*" />
-    <BinFiles Include="$(BaseDir)SignatureRotator\obj\**\*.*" />
-    <BinFiles Include="$(BaseDir)UnitTests\obj\**\*.*" />
-	</ItemGroup>
-	<Message Text="Cleaning Binaries ..." />
-	<Delete Files="@(BinFiles)"
-			   ContinueOnError="true" />
-  </Target>
+	<Target Name="Clean">
+		<ItemGroup>
+			<BinFiles Include="$(BaseDir)SignatureLibrary\bin\**\*.*" />
+			<BinFiles Include="$(BaseDir)SignatureRotator\bin\**\*.*" />
+			<BinFiles Include="$(BaseDir)UnitTests\bin\**\*.*" />
+			<BinFiles Include="$(BaseDir)SignatureLibrary\obj\**\*.*" />
+			<BinFiles Include="$(BaseDir)SignatureRotator\obj\**\*.*" />
+			<BinFiles Include="$(BaseDir)UnitTests\obj\**\*.*" />
+		</ItemGroup>
+		<Message Text="Cleaning Binaries ..." />
+		<Delete Files="@(BinFiles)"
+		        ContinueOnError="true" />
+	</Target>
 
-  <Target Name="Tests">
-	<Message Text="$(Configuration) Building UnitTests..." />
-	<MSBuild Projects="$(BaseDir)UnitTests\UnitTests.vbproj"
-			 Targets="Build"
-			 Properties="Configuration=$(Configuration)"/>
-	<Message Text="Running tests on $(BaseDir)UnitTests\bin\$(Configuration)\SignatureLibraryTest.dll" />
-	<NUnit Assemblies="$(BaseDir)UnitTests\bin\$(Configuration)\SignatureLibraryTest.dll"
-		   ToolPath="C:\Program Files (x86)\NUnit 2.6\bin\"
-		   DisableShadowCopy="true"
-		   ProjectConfiguration="$(Configuration)"
-		   WorkingDirectory="$(BaseDir)UnitTests"
-		   ContinueOnError="false" />
-  </Target>
+	<Target Name="Tests">
+		<Message Text="$(Configuration) Building UnitTests..." />
+		<MSBuild Projects="$(BaseDir)UnitTests\UnitTests.vbproj"
+		         Targets="Build"
+		         Properties="Configuration=$(Configuration)" />
+		<Message
+			Text="Running tests on $(BaseDir)UnitTests\bin\$(Configuration)\SignatureLibraryTest.dll" />
+		<NUnit
+			Assemblies="$(BaseDir)UnitTests\bin\$(Configuration)\SignatureLibraryTest.dll"
+			ToolPath="C:\Program Files (x86)\NUnit 2.6\bin\"
+			DisableShadowCopy="true"
+			ProjectConfiguration="$(Configuration)"
+			WorkingDirectory="$(BaseDir)UnitTests"
+			ContinueOnError="false" />
+	</Target>
 
-  <Target Name="Publish"
-		  DependsOnTargets="Version;Build">
-	<Message Text="Publishing Solution..." />
-	<RemoveDir Directories="$(BaseDir)code_drop"
-			   ContinueOnError="true" />
-	<ItemGroup>
-	  <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\*.dll" />
-    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\SignatureRotator.exe" />
-    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\SignatureRotator.exe.config" />
-    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\gdw16.ico" />
-    <Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\myquotes.xml" />
-	</ItemGroup>
-	<Copy SourceFiles="@(Bin)"
-		  destinationFolder="$(BaseDir)code_drop" />
-  </Target>
+	<Target Name="Publish"
+	        DependsOnTargets="Version;Build">
+		<Message Text="Publishing Solution..." />
+		<RemoveDir Directories="$(BaseDir)code_drop"
+		           ContinueOnError="true" />
+		<ItemGroup>
+			<Bin Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\*.dll" />
+			<Bin
+				Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\SignatureRotator.exe" />
+			<Bin
+				Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\SignatureRotator.exe.config" />
+			<Bin
+				Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\gdw16.ico" />
+			<Bin
+				Include="$(BaseDir)SignatureRotator\bin\$(Configuration)\myquotes.xml" />
+		</ItemGroup>
+		<Copy SourceFiles="@(Bin)"
+		      destinationFolder="$(BaseDir)code_drop" />
+	</Target>
 
-  <Target Name="Build"
-		  DependsOnTargets="Clean">
-	<Message Text="$(Configuration) Building Solution.." />
-	<MSBuild Projects="$(BaseDir)RandomSig.sln"
-			 Targets="Build"
-			 Properties="Configuration=$(Configuration)"/>
-  </Target>
+	<Target Name="Build"
+	        DependsOnTargets="Clean">
+		<Message Text="$(Configuration) Building Solution.." />
+		<MSBuild Projects="$(BaseDir)RandomSig.sln"
+		         Targets="Build"
+		         Properties="Configuration=$(Configuration)" />
+	</Target>
 </Project>

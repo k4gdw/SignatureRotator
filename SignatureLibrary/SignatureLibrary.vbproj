@@ -50,7 +50,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.vb">
+    <Compile Include="..\SolutionFiles\SolutionInfo.vb">
       <Link>SolutionInfo.vb</Link>
     </Compile>
     <Compile Include="SignatureLib.vb" />

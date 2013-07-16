@@ -74,7 +74,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.vb">
+    <Compile Include="..\SolutionFiles\SolutionInfo.vb">
       <Link>SolutionInfo.vb</Link>
     </Compile>
     <Compile Include="modMain.vb" />
