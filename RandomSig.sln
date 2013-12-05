@@ -1,6 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -16,10 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E4245D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{DD2D36B6-5C5E-42F1-8E69-93581EF378E4}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-		SolutionFiles\SolutionInfo.vb = SolutionFiles\SolutionInfo.vb
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InfoFiles", "InfoFiles", "{DD2D36B6-5C5E-42F1-8E69-93581EF378E4}"
 	ProjectSection(SolutionItems) = preProject
 		SolutionInfo.vb = SolutionInfo.vb
