@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionFiles\SolutionInfo.vb">
+    <Compile Include="..\SolutionInfo.vb">
       <Link>SolutionInfo.vb</Link>
     </Compile>
     <Compile Include="modMain.vb" />

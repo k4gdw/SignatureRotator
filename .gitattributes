@@ -1,0 +1,62 @@
+* 					-text
+
+# binaries and images
+*.bmp				binary
+*.dll				binary
+*.gif				binary
+*.jpg				binary
+*.png				binary
+*.snk				binary
+*.zip				binary
+*.nupkg				binary
+
+# project and solution files
+*.csproj 			-text merge=union 
+*.vbproj 			-text merge=union 
+*.fsproj 			-text merge=union 
+*.dbproj 			-text merge=union 
+*.sln 	 			-text eol=crlf merge=union 
+
+# text based source and markup files
+*.htm				-text
+*.html				-text
+*.ascx				-text
+*.asmx				-text
+*.cshtml			-text
+*.css				-text
+*.cd				-text
+*.cmd				-text
+*.coffee			-text
+*.config			-text
+*.cs				-text diff=csharp 
+*.dtd				-text
+*.edmx				-text
+*.js				-text diff=javascript
+*.json				-text
+*.msbuild			-text
+*.nuspec			-text
+*.resx				-text
+*.ruleset			-text
+*.StyleCop			-text
+*.targets			-text
+*.tt				-text
+*.txt				-text
+*.vb				-text
+*.vbhtml			-text
+*.vbs				-text
+*.wsf				-text
+*.xml				-text
+*.xunit				-text
+.gitattributes		-text
+.gitignore			-text
+*.xaml				-text
+*.appxmanifest		-text
+*.txt				-text
+*.md				-text
+*.markgown			-text
+*.cmd				-text
+*.config			-text
+*.targets			-text
+*.xml				-text
+Settings.StyleCop 	-text
+VERSION 			-text

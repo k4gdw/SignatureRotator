@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SignatureRotator", "SignatureRotator\SignatureRotator.vbproj", "{80AD19FE-DA84-439B-B40C-BC1834814262}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SignatureLibrary", "SignatureLibrary\SignatureLibrary.vbproj", "{DCDB8BE5-D2B8-4BB8-8A4B-5CBA4CE25D92}"
@@ -17,6 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		SolutionFiles\SolutionInfo.vb = SolutionFiles\SolutionInfo.vb
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InfoFiles", "InfoFiles", "{DD2D36B6-5C5E-42F1-8E69-93581EF378E4}"
+	ProjectSection(SolutionItems) = preProject
+		SolutionInfo.vb = SolutionInfo.vb
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{513600FE-1F1A-462E-9951-CCB9BA7C146B}"
@@ -27,6 +33,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{513600FE
 		Build\publishrelease.bat = Build\publishrelease.bat
 		Build\test.bat = Build\test.bat
 		Build\testrelease.bat = Build\testrelease.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{A0BA594D-F4B3-485E-8F83-6C1BAD21E1A3}"
+	ProjectSection(SolutionItems) = preProject
+		SignatureRotator\changes.txt = SignatureRotator\changes.txt
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
