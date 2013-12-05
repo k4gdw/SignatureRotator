@@ -121,7 +121,6 @@
     <Content Include="myquotes.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SignatureLibrary\SignatureLibrary.vbproj">

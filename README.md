@@ -1,5 +1,5 @@
-K4GDW Signature Rotator ReadMe
-
+K4GDW Signature Rotator
+=======================
 
 This is a simple little utility that rotates email signatures for email programs
 that support an external signature file but do not provide a means of rotating
@@ -19,21 +19,21 @@ it's custom signature file feature and point it at the generated file.
 I've tested this with Outlook 2003 and 2007.  It should work with just about
 any windows email program that lets you configure a signature file.
 
-<?xml version="1.0" encoding="utf-8"?>
-<Signature>
-	<Separator>--</Separator>
-	<Name>John Doe</Name>
-	<NickName>Johnny B Goode</NickName>
-	<OtherInfo></OtherInfo>
-	<Email>jbgoode@somewhere.com</Email>
-	<Phone></Phone>
-	<WebPage>http://www.jbgoode.com</WebPage>
-	<Boilerplate></Boilerplate>
-	<Quotes>
-		<Quote>Some witty words from someone...</Quote>
-		...
-	</Quotes>
-</Signature>
+    <?xml version="1.0" encoding="utf-8"?>
+	<Signature>
+		<Separator>--</Separator>
+		<Name>John Doe</Name>
+		<NickName>Johnny B Goode</NickName>
+		<OtherInfo></OtherInfo>
+		<Email>jbgoode@somewhere.com</Email>
+		<Phone>111-222-3333</Phone>
+		<WebPage>http://www.jbgoode.com</WebPage>
+		<Boilerplate></Boilerplate>
+		<Quotes>
+			<Quote>Some witty words from someone...</Quote>
+			...
+		</Quotes>
+	</Signature>
 
 The signature saved for Outlook, or whatever, to use will be like this:
 
