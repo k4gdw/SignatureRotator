@@ -1,1 +1,1 @@
-msbuild /m /t:Clean;Build /p:Configuration=Release ..\Gigabot.sln
+msbuild /m /t:Clean;Build /p:Configuration=Release ..\SignatureRotator.sln
